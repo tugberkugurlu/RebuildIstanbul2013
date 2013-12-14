@@ -8,12 +8,17 @@ using System.Threading.Tasks;
 
 namespace OwinHelloWorld
 {
+    using System.Web.Http;
     using AppFunc = Func<IDictionary<string, object>, Task>;
 
     public class Startup
     {
         public void Configuration(IAppBuilder app)
         {
+            HttpConfiguration config = new HttpConfiguration();
+            config.Routes.MapHttpRoute("DefaultHttpRoute", "api/{controller}");
+
+            app.UseWebApi(config);
             app.Use(new Func<AppFunc, AppFunc>(ignoreNext => Invoke));
         }
 
